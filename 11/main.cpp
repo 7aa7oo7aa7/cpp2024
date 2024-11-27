@@ -88,6 +88,24 @@ public:
         return *this;
     }
 
+    // ++a, a++
+
+    Rational& operator++() {  // ++a
+        return *this += 1;
+    }
+
+    Rational operator++(int) {  // a++
+        auto copy = *this;
+        *this += 1;
+        return copy;
+    }
+
+    friend bool operator<(const Rational& left, const Rational& right);
+    friend bool operator!=(const Rational& left, const Rational& right);
+
+    friend std::istream& operator>>(std::istream& stream, Rational& value);  // std::cin >> a
+    friend std::ostream& operator<<(std::ostream& stream, const Rational& value);  // std::cout << a
+
     // operator+ : Rational(new_numerator, new_denominator)
     // operator+= : numerator = new_numerator, denominator = new_denominator
 
@@ -110,6 +128,42 @@ Rational operator+(const Rational& left, const Rational& right) {
     Rational copy = left;
     return copy += right;
     // a/b + c/d = (ad + bc) / bd
+}
+
+bool operator<(const Rational& left, const Rational& right) {
+    return left.numerator_ * right.denominator_ < right.numerator_ * left.denominator_;
+    // a/b < c/d, b,d > 0
+    // ad < bc
+}
+
+// <, <=, >, >=, ==, !=
+
+bool operator!=(const Rational& left, const Rational& right) {
+    return (left < right) || (right < left);
+}
+
+std::istream& operator>>(std::istream& stream, Rational& value) {
+    // std::cin >> x >> y >> z;
+    // std::cin.operator>>(x).operator>>(y).operator>>(z);
+
+    // stream >> numerator
+    // if (stream.get() == '/')
+    if (stream.peek() == '/') {
+        stream.get();
+        // stream >> denominator
+    } else {
+        // denominator = 1
+    }
+    return stream;
+}
+
+std::ostream& operator<<(std::ostream& stream, const Rational& value) {
+    if (value.denominator_ == 1) {
+        stream << value.numerator_;
+    } else {
+        stream << value.numerator_ << '/' << value.denominator_;
+    }
+    return stream;
 }
 
 int main() {
