@@ -12,7 +12,8 @@
 // git branch
 // git checkout -b branch1
 
-
+// git clone https://github.com/7aa7oo7aa7/cpp_2024_test_repo_1.git
+// git pull
 
 
 
